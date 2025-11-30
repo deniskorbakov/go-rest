@@ -1,10 +1,10 @@
 package main
 
 import (
-	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"log"
 
-	"go-http-template/internal/config"
+	"go-http-servere/internal/config"
 	"go.uber.org/zap"
 )
 
@@ -30,7 +30,7 @@ func run() error {
 
 	logger.Info("initializing database")
 
-	conn, err := sql.Open("pgx", cfg.DBUrl)
+	conn, err := sqlx.Open("pgx", cfg.DBUrl)
 	if err != nil {
 		logger.Panic("cant init db, err: ", zap.Error(err))
 	}
