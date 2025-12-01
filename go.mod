@@ -4,6 +4,7 @@ go 1.24.4
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/ilyakaznacheev/cleanenv v1.5.0 // indirect
 	github.com/jmoiron/sqlx v1.4.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
