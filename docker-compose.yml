@@ -7,6 +7,8 @@ services:
     ports:
       - "${API_PORT}:${API_PORT}"
       - "${DIAG_PORT}:${DIAG_PORT}"
+    environment:
+      - DB_URL="postgres://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_DATABASE}?sslmode=disable
     depends_on:
       - db
       - flyway
@@ -23,28 +25,21 @@ services:
       PGDATA: '/var/lib/postgresql/data/pgdata'
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '${DB_PORT}:5432'
     networks:
       - app
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
-      interval: 10s
-      timeout: 5s
+      interval: 1s
+      timeout: 2s
       retries: 5
-      start_period: 10s
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 4G
 
   flyway:
     container_name: flyway.${APP_NAME}
-    image: boxfuse/flyway
-    command: -url=jdbc:postgresql://petstore-db:5432/petstore -user=db-user -password=db-password migrate
+    image: boxfuse/flyway:latest
+    command: "-url=jdbc:postgresql://db:5432/${DB_DATABASE} -user=${DB_USERNAME} -password=${DB_PASSWORD} migrate"
     volumes:
       - ./db/migration:/flyway/sql
     depends_on:
