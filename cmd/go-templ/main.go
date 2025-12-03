@@ -34,18 +34,20 @@ func run() error {
 
 	cfg, err := config.Load()
 	if err != nil {
-		logger.Panic("cant init config, err: ", zap.Error(err))
+		logger.Panic("cant init config", zap.Error(err))
 	}
+
+	logger.Info("conf: ", zap.Any("cfg", cfg))
 
 	logger.Info("initializing database")
 
-	conn, err := sqlx.Open("pgx", cfg.DBUrl)
+	conn, err := sqlx.Open("postgres", cfg.DBUrl)
 	if err != nil {
-		logger.Panic("cant init db, err: ", zap.Error(err))
+		logger.Panic("cant init db", zap.Error(err))
 	}
 
 	if err = conn.Ping(); err != nil {
-		logger.Panic("cant connect to db, err: ", zap.Error(err))
+		logger.Panic("cant connect to db", zap.Error(err))
 	}
 
 	logger.Info("initializing router")
@@ -70,7 +72,7 @@ func run() error {
 		logger.Info("starting server", zap.String("port", cfg.ApiPort))
 
 		if err = srv.ListenAndServe(); err != nil {
-			logger.Error("failed to start server, err: ", zap.Error(err))
+			logger.Error("failed to start server", zap.Error(err))
 		}
 	}()
 
