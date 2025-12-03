@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"go-templ/internal/handler"
 	"go.uber.org/zap"
 	"log"
 	"net"
@@ -16,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"go-templ/internal/config"
+	"go-templ/internal/handler"
 )
 
 func main() {
