@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
@@ -65,7 +66,10 @@ func run() error {
 
 	logger.Info("stopping server")
 
-	if err = healthServer.Stop(); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
+	defer cancel()
+
+	if err = healthServer.Stop(ctx); err != nil {
 		logger.Error("server stopped with error", zap.Error(err))
 	}
 
