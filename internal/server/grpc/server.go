@@ -2,6 +2,8 @@ package grpc
 
 import (
 	"context"
+	v1 "github.com/go-list-templ/proto/gen/api/user/v1"
+	"go-templ/internal/service"
 	"net"
 
 	"go-templ/internal/resource"
@@ -20,6 +22,10 @@ func NewServer(cfg *resource.Config, log *zap.Logger) *Server {
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(loggingInterceptor(log)),
 	)
+
+	userService := service.NewUserService()
+
+	v1.RegisterUserServiceServer(grpcServer, userService)
 
 	return &Server{
 		config: cfg,
