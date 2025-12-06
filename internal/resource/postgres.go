@@ -7,7 +7,7 @@ import (
 )
 
 func NewPostgres(cfg *Config) (*sqlx.DB, error) {
-	conn, err := sqlx.Open("postgres", cfg.DBUrl)
+	conn, err := sqlx.Open(cfg.DBDriver, cfg.DBUrl)
 	if err != nil {
 		return nil, err
 	}

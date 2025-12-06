@@ -11,6 +11,7 @@ type Config struct {
 	GRPCPort        string        `envconfig:"GRPC_PORT"`
 	HealthPort      string        `envconfig:"HEALTH_PORT"`
 	DBUrl           string        `envconfig:"DB_URL"`
+	DBDriver        string        `envconfig:"DB_DRIVER"`
 	DbMaxConn       int           `envconfig:"DB_MAX_CONN"`
 	DbMaxIdle       int           `envconfig:"DB_MAX_IDLE"`
 	HTTPTimeout     time.Duration `envconfig:"HTTP_TIMEOUT"`

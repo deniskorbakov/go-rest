@@ -6,6 +6,7 @@ COPY . .
 
 RUN go mod download && CGO_ENABLED=0 go build -o /go/bin/app ./cmd/grpc
 
+# todo add max min size image
 FROM gcr.io/distroless/static-debian12:nonroot
 
 COPY --from=build /go/bin/app /
