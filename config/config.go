@@ -37,7 +37,7 @@ type (
 	}
 )
 
-func NewConfig() (*Config, error) {
+func Load() (*Config, error) {
 	var cfg Config
 	err := envconfig.Process("", &cfg)
 	if err != nil {

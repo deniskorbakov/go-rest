@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/go-list-templ/grpc/config"
 	"log"
 	"os"
 	"os/signal"
@@ -28,7 +29,7 @@ func run() error {
 	logger.Info("starting app")
 	logger.Info("initializing config")
 
-	cfg, err := resource.NewConfig()
+	cfg, err := config.Load()
 	if err != nil {
 		logger.Panic("cant init config", zap.Error(err))
 	}
