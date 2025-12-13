@@ -1,7 +1,6 @@
 package vo
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -12,24 +11,30 @@ const (
 	MaxLength = 30
 )
 
+var (
+	ErrUsernameMinLength = fmt.Errorf("username must be at least %v characters", MinLength)
+	ErrUsernameMaxLength = fmt.Errorf("username must be at least %v characters", MinLength)
+	ErrUsernameValidate  = fmt.Errorf("username can only contain letters, numbers and underscores")
+
+	usernameRegex = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
+)
+
 type Username struct {
 	value string
 }
-
-var usernameRegex = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
 
 func NewUsername(username string) (Username, error) {
 	username = strings.TrimSpace(username)
 
 	if len(username) < MinLength {
-		return Username{}, fmt.Errorf("username must be at least %v characters", MinLength)
+		return Username{}, ErrUsernameMinLength
 	}
 	if len(username) > MaxLength {
-		return Username{}, fmt.Errorf("username must be less than %v characters", MaxLength)
+		return Username{}, ErrUsernameMaxLength
 	}
 
 	if !usernameRegex.MatchString(username) {
-		return Username{}, errors.New("username can only contain letters, numbers and underscores")
+		return Username{}, ErrUsernameValidate
 	}
 
 	return Username{value: username}, nil

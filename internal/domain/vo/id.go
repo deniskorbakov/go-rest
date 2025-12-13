@@ -6,6 +6,8 @@ import (
 	"github.com/google/uuid"
 )
 
+var ErrInvalidUUID = errors.New("invalid uuid")
+
 type ID struct {
 	value uuid.UUID
 }
@@ -17,7 +19,7 @@ func NewID() ID {
 func NewIDFromString(id string) (ID, error) {
 	parsed, err := uuid.Parse(id)
 	if err != nil {
-		return ID{}, errors.New("invalid id format")
+		return ID{}, ErrInvalidUUID
 	}
 
 	return ID{value: parsed}, nil

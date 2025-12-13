@@ -5,16 +5,21 @@ import (
 	"regexp"
 )
 
+var (
+	ErrInvalidEmail = errors.New("invalid email")
+
+	emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+)
+
 type Email struct {
 	value string
 }
 
-var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
-
 func NewEmail(email string) (Email, error) {
 	if !emailRegex.MatchString(email) {
-		return Email{}, errors.New("invalid email format")
+		return Email{}, ErrInvalidEmail
 	}
+
 	return Email{value: email}, nil
 }
 

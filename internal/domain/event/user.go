@@ -1,18 +1,13 @@
 package event
 
-import "github.com/go-list-templ/grpc/internal/domain/vo"
+import (
+	"time"
 
-const (
-	UserCreated TypeUserEvent = "created"
-	UserDeleted TypeUserEvent = "deleted"
+	"github.com/go-list-templ/grpc/internal/domain/vo"
 )
 
-type (
-	TypeUserEvent string
-
-	UserEvent struct {
-		UserID    vo.ID
-		EventTime vo.Time
-		TypeUser  TypeUserEvent
-	}
-)
+type UserEvent struct {
+	UserID    vo.ID
+	Event     TypeEvent
+	EventTime time.Time
+}

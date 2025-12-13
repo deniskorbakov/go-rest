@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+
 	"github.com/go-list-templ/grpc/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -11,12 +12,12 @@ type Postgres struct {
 }
 
 func NewPostgres(cfg *config.DB) (*Postgres, error) {
-	conf, err := pgxpool.ParseConfig(cfg.Url)
+	conf, err := pgxpool.ParseConfig(cfg.URL)
 	if err != nil {
 		return nil, err
 	}
 
-	conf.MaxConns = int32(cfg.MaxConn)
+	conf.MaxConns = cfg.MaxConn
 	conf.MaxConnLifetime = cfg.MaxConnTime
 
 	pool, err := pgxpool.NewWithConfig(context.Background(), conf)
