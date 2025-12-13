@@ -22,13 +22,12 @@ services:
     depends_on:
       - db
       - kvrocks
-      - dbmate
     networks:
       - app
 
   db:
     container_name: db.${APP_NAME}
-    image: postgres:17-alpine
+    image: postgres:17
     environment:
       POSTGRES_USER: '${DB_USERNAME}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
@@ -63,6 +62,7 @@ services:
       retries: 30
     expose:
       - '${REDIS_PORT}'
+
 volumes:
   pg_data:
   kvrocks_data:
