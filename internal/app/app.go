@@ -1,21 +1,22 @@
 package app
 
 import (
-	"github.com/go-list-templ/grpc/config"
-	"github.com/go-list-templ/grpc/internal/infra/cache"
-	"github.com/go-list-templ/grpc/internal/infra/storage"
-	"go.uber.org/zap"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/health"
+	"context"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/go-list-templ/grpc/config"
+	"github.com/go-list-templ/grpc/internal/controller/grpc"
+	"github.com/go-list-templ/grpc/internal/controller/http"
+	"github.com/go-list-templ/grpc/internal/infra/cache"
+	"github.com/go-list-templ/grpc/internal/infra/storage"
+	"go.uber.org/zap"
 )
 
+// nolint:funlen,errcheck
 func Run() error {
 	logger, _ := zap.NewProduction()
-
-	//nolint:errcheck
 	defer logger.Sync()
 
 	logger.Info("starting app")
@@ -25,6 +26,8 @@ func Run() error {
 	if err != nil {
 		logger.Panic("cant init config", zap.Error(err))
 	}
+
+	logger.Info("conf: ", zap.Any("config", cfg))
 
 	logger.Info("initializing postgres")
 
@@ -42,10 +45,10 @@ func Run() error {
 
 	logger.Info("initializing servers")
 
-	grpcServer := grpc.NewServer(cfg, logger)
+	grpcServer := grpc.NewServer(&cfg.Server)
 	grpcServer.Start()
 
-	healthServer := health.NewServer(cfg, logger, pg)
+	healthServer := http.NewHealthServer(&cfg.Server)
 	healthServer.Start()
 
 	logger.Info("server started successfully")
@@ -70,7 +73,7 @@ func Run() error {
 
 	logger.Info("stopping servers")
 
-	ctx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.Server.ShutdownTimeout)
 	defer cancel()
 
 	grpcServer.Stop()
