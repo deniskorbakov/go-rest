@@ -1,13 +1,18 @@
 package usecase
 
-import "github.com/go-list-templ/grpc/internal/domain/entity"
+import (
+	"context"
+
+	"github.com/go-list-templ/grpc/internal/domain/entity"
+	"github.com/go-list-templ/grpc/internal/domain/vo"
+)
 
 type (
 	User interface {
-		Create() (entity.User, error)
-		Update(user entity.User) (entity.User, error)
-		Delete(user entity.User) error
-		Show() (entity.User, error)
-		All() ([]entity.User, error)
+		Create(context.Context) (entity.User, error)
+		Update(context.Context, entity.User) (entity.User, error)
+		Delete(context.Context, entity.User) error
+		Show(context.Context, vo.ID) (entity.User, error)
+		All(context.Context) ([]entity.User, error)
 	}
 )
