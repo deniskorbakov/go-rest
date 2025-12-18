@@ -9,9 +9,9 @@ import (
 
 type (
 	UserPersistentRepo interface {
-		Store(context.Context) (entity.User, error)
+		Store(context.Context, entity.User) error
 		Change(context.Context, entity.User) (entity.User, error)
-		Destroy(context.Context, entity.User) error
+		Destroy(context.Context, vo.ID) error
 		GetById(context.Context, vo.ID) (entity.User, error)
 		All(context.Context) ([]entity.User, error)
 	}
