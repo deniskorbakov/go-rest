@@ -26,12 +26,12 @@ func (u *UseCase) All(ctx context.Context) ([]entity.User, error) {
 }
 
 func (u *UseCase) Create(ctx context.Context, user entity.User) (entity.User, error) {
-	createdUser, err := u.repo.Store(ctx, user)
+	err := u.repo.Store(ctx, user)
 	if err != nil {
 		return user, err
 	}
 
-	return createdUser, nil
+	return user, nil
 }
 
 func (u *UseCase) Delete(ctx context.Context, userID vo.ID) error {
