@@ -8,14 +8,14 @@ import (
 
 type User struct {
 	ID        vo.ID
-	Username  vo.Username
+	Name      vo.Name
 	Email     vo.Email
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
-func NewUser(username, email string) (*User, error) {
-	validUsername, err := vo.NewUsername(username)
+func NewUser(Name, email string) (*User, error) {
+	validName, err := vo.NewName(Name)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func NewUser(username, email string) (*User, error) {
 
 	return &User{
 		ID:        vo.NewID(),
-		Username:  validUsername,
+		Name:      validName,
 		Email:     validEmail,
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
