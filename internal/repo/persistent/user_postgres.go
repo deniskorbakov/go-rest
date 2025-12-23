@@ -23,11 +23,11 @@ func (r *UserPostgresRepo) Store(ctx context.Context, user entity.User) error {
 	`
 
 	_, err := r.Pool.Exec(ctx, query,
-		user.ID,
-		user.Username,
-		user.Email,
-		user.CreatedAt,
-		user.UpdatedAt,
+		user.ID.Value(),
+		user.Name.Value(),
+		user.Email.Value(),
+		user.CreatedAt.String(),
+		user.UpdatedAt.String(),
 	)
 	if err != nil {
 		return err
@@ -44,10 +44,10 @@ func (r *UserPostgresRepo) Change(ctx context.Context, user entity.User) (entity
 	`
 
 	err := r.Pool.QueryRow(ctx, query,
-		user.ID,
-		user.Username,
-		user.Email,
-		user.UpdatedAt,
+		user.ID.Value(),
+		user.Name.Value(),
+		user.Email.Value(),
+		user.UpdatedAt.String(),
 	).Scan(&updatedUser)
 	if err != nil {
 		return updatedUser, err
