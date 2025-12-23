@@ -9,9 +9,9 @@ import (
 
 type (
 	User interface {
-		Create(context.Context) (entity.User, error)
+		Create(context.Context, entity.User) (entity.User, error)
 		Update(context.Context, entity.User) (entity.User, error)
-		Delete(context.Context, entity.User) error
+		Delete(context.Context, vo.ID) error
 		Show(context.Context, vo.ID) (entity.User, error)
 		All(context.Context) ([]entity.User, error)
 	}
