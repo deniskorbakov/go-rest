@@ -6,6 +6,8 @@ start: build migrate
 
 lint: docker-lint go-lint
 
+lint-fix: go-lint-fix
+
 build:
 	docker compose --env-file .env up -d --build
 
@@ -14,6 +16,9 @@ docker-lint:
 
 go-lint:
 	docker run --rm -v $$(pwd):/app -w /app golangci/golangci-lint:v2.1.6 golangci-lint run
+
+go-lint-fix:
+	docker run --rm -v $$(pwd):/app -w /app golangci/golangci-lint:v2.1.6 golangci-lint run --fix
 
 migrate:
 	docker run --rm --network=host -v $$(pwd)/db/migrations:/db/migrations -e DATABASE_URL="$(DB_URL)" amacneil/dbmate:2.28 up
