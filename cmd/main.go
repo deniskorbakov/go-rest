@@ -8,10 +8,10 @@ import (
 	"syscall"
 
 	"github.com/go-list-templ/grpc/config"
-	"github.com/go-list-templ/grpc/internal/controller/grpc"
-	"github.com/go-list-templ/grpc/internal/controller/http"
-	"github.com/go-list-templ/grpc/internal/infra/persistent/postgres"
-	"github.com/go-list-templ/grpc/internal/infra/persistent/redis"
+	"github.com/go-list-templ/grpc/pkg/grpcserver"
+	"github.com/go-list-templ/grpc/pkg/httpserver"
+	"github.com/go-list-templ/grpc/pkg/postgres"
+	"github.com/go-list-templ/grpc/pkg/redis"
 	"go.uber.org/zap"
 )
 
@@ -56,10 +56,10 @@ func run() error {
 
 	logger.Info("initializing servers")
 
-	grpcServer := grpc.NewServer(&cfg.Server)
+	grpcServer := grpcserver.NewApiServer(&cfg.Server)
 	grpcServer.Start()
 
-	healthServer := http.NewHealthServer(&cfg.Server)
+	healthServer := httpserver.NewHealthServer(&cfg.Server)
 	healthServer.Start()
 
 	logger.Info("server started successfully")
