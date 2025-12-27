@@ -12,6 +12,11 @@ import (
 
 func (r *V1) CreateUser(ctx context.Context, request *v1.CreateUserRequest) (*v1.CreateUserResponse, error) {
 	user, err := entity.NewUser(request.GetUsername(), request.GetEmail())
+	if err != nil {
+		r.l.Error("grpc - v1 - NewUser", zap.Error(err))
+
+		return nil, fmt.Errorf("grpc - v1 - NewUser: %w", err)
+	}
 
 	createdUser, err := r.u.Create(ctx, *user)
 	if err != nil {
