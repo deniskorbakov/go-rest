@@ -2,15 +2,15 @@ package main
 
 import (
 	"context"
-	"github.com/go-list-templ/grpc/internal/controller/grpc"
-	"github.com/go-list-templ/grpc/internal/repo/persistent"
-	"github.com/go-list-templ/grpc/internal/usecase/user"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/go-list-templ/grpc/config"
+	"github.com/go-list-templ/grpc/internal/controller/grpc"
+	"github.com/go-list-templ/grpc/internal/repo/persistent"
+	"github.com/go-list-templ/grpc/internal/usecase/user"
 	"github.com/go-list-templ/grpc/pkg/grpcserver"
 	"github.com/go-list-templ/grpc/pkg/httpserver"
 	"github.com/go-list-templ/grpc/pkg/postgres"
