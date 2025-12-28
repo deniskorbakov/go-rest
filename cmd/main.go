@@ -43,7 +43,7 @@ func run() error {
 	if err != nil {
 		logger.Panic("cant init postgres", zap.Error(err))
 	}
-	pg.Close()
+	defer pg.Close()
 
 	logger.Info("initializing redis")
 
