@@ -27,7 +27,7 @@ func (r *V1) CreateUser(ctx context.Context, request *v1.CreateUserRequest) (*v1
 
 	return &v1.CreateUserResponse{
 		User: &v1.User{
-			Id:        createdUser.ID.Value().ID(),
+			Id:        createdUser.ID.Value().String(),
 			Username:  createdUser.Name.Value(),
 			Email:     createdUser.Email.Value(),
 			CreatedAt: timestamppb.New(createdUser.CreatedAt),
