@@ -26,8 +26,8 @@ func (r *UserPostgresRepo) Store(ctx context.Context, user entity.User) error {
 		user.ID.Value(),
 		user.Name.Value(),
 		user.Email.Value(),
-		user.CreatedAt.String(),
-		user.UpdatedAt.String(),
+		user.CreatedAt,
+		user.UpdatedAt,
 	)
 	if err != nil {
 		return err
