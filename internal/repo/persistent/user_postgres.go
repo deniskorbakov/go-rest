@@ -2,7 +2,7 @@ package persistent
 
 import (
 	"context"
-	"github.com/go-list-templ/grpc/internal/repo/dao"
+	"github.com/go-list-templ/grpc/internal/repo/persistent/dao"
 
 	"github.com/go-list-templ/grpc/internal/domain/entity"
 	"github.com/go-list-templ/grpc/internal/domain/vo"
