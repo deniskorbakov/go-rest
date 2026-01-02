@@ -10,7 +10,7 @@ import (
 
 func NewRouter(app *pbgrpc.Server, u usecase.User, l zap.Logger) {
 	{
-		v1.NewUserRoutes(app, u, l)
+		v1.NewUserRoute(app, u, l)
 	}
 
 	reflection.Register(app)
