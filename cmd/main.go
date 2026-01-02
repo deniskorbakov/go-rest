@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-list-templ/grpc/config"
 	"github.com/go-list-templ/grpc/internal/controller/grpc"
+	"github.com/go-list-templ/grpc/internal/repo"
 	"github.com/go-list-templ/grpc/internal/repo/persistent"
 	"github.com/go-list-templ/grpc/internal/usecase/user"
 	"github.com/go-list-templ/grpc/pkg/grpcserver"
@@ -57,9 +58,13 @@ func run() error {
 		}
 	}()
 
+	logger.Info("initializing repositories")
+
+	userRepo := repo.NewUserRepo(persistent.NewUserPostgresRepo(pg), *rd, *logger)
+
 	logger.Info("initializing use case")
 
-	userUseCase := user.New(persistent.NewUserPostgresRepo(pg))
+	userUseCase := user.New(*userRepo)
 
 	logger.Info("initializing servers")
 

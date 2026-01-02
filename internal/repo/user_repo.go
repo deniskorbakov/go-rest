@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+
 	"encoding/json"
 	"github.com/go-list-templ/grpc/internal/domain/entity"
 	"go.uber.org/zap"
@@ -17,12 +18,11 @@ const (
 type UserRepo struct {
 	persistent UserPersistentRepo
 	redis      redis.Redis
-	ctx        context.Context
 	logger     zap.Logger
 }
 
-func NewUserRepo(ctx context.Context, p UserPersistentRepo, r redis.Redis, logger zap.Logger) *UserRepo {
-	return &UserRepo{persistent: p, redis: r, ctx: ctx, logger: logger}
+func NewUserRepo(p UserPersistentRepo, r redis.Redis, logger zap.Logger) *UserRepo {
+	return &UserRepo{persistent: p, redis: r, logger: logger}
 }
 
 func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
@@ -54,10 +54,10 @@ func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
 	return users, nil
 }
 
-func (u *UserRepo) Store(ctx context.Context, user entity.User) (entity.User, error) {
+func (u *UserRepo) Create(ctx context.Context, user entity.User) error {
 	err := u.persistent.Store(ctx, user)
 	if err != nil {
-		return entity.User{}, err
+		return err
 	}
 
 	go func() {
@@ -67,5 +67,5 @@ func (u *UserRepo) Store(ctx context.Context, user entity.User) (entity.User, er
 		}
 	}()
 
-	return user, nil
+	return nil
 }
