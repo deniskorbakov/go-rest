@@ -15,6 +15,4 @@ type (
 		GetByID(context.Context, vo.ID) (entity.User, error)
 		All(context.Context) ([]entity.User, error)
 	}
-
-	UserExternalRepo interface{}
 )
