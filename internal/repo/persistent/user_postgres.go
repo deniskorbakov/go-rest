@@ -2,6 +2,7 @@ package persistent
 
 import (
 	"context"
+	"github.com/go-list-templ/grpc/internal/repo/dao"
 
 	"github.com/go-list-templ/grpc/internal/domain/entity"
 	"github.com/go-list-templ/grpc/internal/domain/vo"
@@ -76,9 +77,26 @@ func (r *UserPostgresRepo) GetByID(ctx context.Context, id vo.ID) (entity.User, 
 func (r *UserPostgresRepo) All(ctx context.Context) ([]entity.User, error) {
 	var users []entity.User
 
-	err := r.QueryRow(ctx, "SELECT * FROM users").Scan(&users)
+	rows, err := r.Query(ctx, "SELECT * FROM users")
 	if err != nil {
 		return users, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var userDAO dao.User
+
+		err = rows.Scan(&userDAO.ID, &userDAO.Name, &userDAO.Email, &userDAO.CreatedAt, &userDAO.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		user, err := userDAO.ToEntity()
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, *user)
 	}
 
 	return users, nil
