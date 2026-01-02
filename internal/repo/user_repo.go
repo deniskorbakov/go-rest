@@ -26,6 +26,8 @@ func NewUserRepo(p UserPersistentRepo, r redis.Redis, logger zap.Logger) *UserRe
 }
 
 func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
+	//todo add dao to get and set in cache
+
 	cachedData, err := u.redis.Get(ctx, CacheKeyAllUsers).Bytes()
 	if err == nil {
 		var users []entity.User
@@ -45,7 +47,7 @@ func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
 			u.logger.Error("marshal users error", zap.Error(err))
 		}
 
-		err = u.redis.Set(ctx, CacheKeyAllUsers, data, 10*time.Minute).Err()
+		err = u.redis.Set(context.Background(), CacheKeyAllUsers, data, 10*time.Minute).Err()
 		if err != nil {
 			u.logger.Error("redis set error", zap.Error(err))
 		}
@@ -61,7 +63,7 @@ func (u *UserRepo) Create(ctx context.Context, user entity.User) error {
 	}
 
 	go func() {
-		err = u.redis.Del(ctx, CacheKeyAllUsers).Err()
+		err = u.redis.Del(context.Background(), CacheKeyAllUsers).Err()
 		if err != nil {
 			u.logger.Error("redis del error", zap.Error(err))
 		}
