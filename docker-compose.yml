@@ -21,7 +21,7 @@ services:
       - REDIS_ADDRESS=${REDIS_HOST}:${REDIS_PORT}
     depends_on:
       - db
-      - kvrocks
+      - redis
     networks:
       - app
 
@@ -46,13 +46,13 @@ services:
       retries: 5
     restart: unless-stopped
 
-  kvrocks:
-    container_name: kvrocks.${APP_NAME}
-    image: apache/kvrocks:2.14.0
+  redis:
+    container_name: redis.${APP_NAME}
+    image: redis:8.4.0-alpine
     volumes:
-      - kvrocks_data:/kvrocks_data
+      - redis_data:/redis_data
     ports:
-      - '${REDIS_PORT}:6666'
+      - '${REDIS_PORT}:6379'
     networks:
       - app
     healthcheck:
@@ -65,7 +65,7 @@ services:
 
 volumes:
   pg_data:
-  kvrocks_data:
+  redis_data:
 
 networks:
   app:
