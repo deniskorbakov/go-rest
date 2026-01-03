@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"fmt"
+
 	"github.com/go-list-templ/grpc/internal/domain/entity"
 	"github.com/go-list-templ/grpc/internal/usecase"
 	v1 "github.com/go-list-templ/proto/gen/api/user/v1"
@@ -28,14 +29,14 @@ func NewUserRoute(server *pbgrpc.Server, u usecase.User, l zap.Logger) {
 func (r *UserService) CreateUser(ctx context.Context, request *v1.CreateUserRequest) (*v1.CreateUserResponse, error) {
 	user, err := entity.NewUser(request.GetUsername(), request.GetEmail())
 	if err != nil {
-		r.logger.Error("grpc - v1 - NewUser", zap.Error(err))
+		r.logger.Warn("grpc - v1 - NewUser", zap.Any("error:", err.Error()))
 
 		return nil, fmt.Errorf("grpc - v1 - NewUser: %w", err)
 	}
 
 	createdUser, err := r.usecase.Create(ctx, *user)
 	if err != nil {
-		r.logger.Error("grpc - v1 - CreateUser", zap.Error(err))
+		r.logger.Warn("grpc - v1 - CreateUser", zap.Any("error:", err.Error()))
 
 		return nil, fmt.Errorf("grpc - v1 - CreateUser: %w", err)
 	}
@@ -54,7 +55,7 @@ func (r *UserService) CreateUser(ctx context.Context, request *v1.CreateUserRequ
 func (r *UserService) AllUsers(ctx context.Context, _ *v1.AllUsersRequest) (*v1.AllUsersResponse, error) {
 	allUsers, err := r.usecase.All(ctx)
 	if err != nil {
-		r.logger.Error("grpc - v1 - AllUsers", zap.Error(err))
+		r.logger.Warn("grpc - v1 - AllUsers", zap.Any("error:", err.Error()))
 
 		return nil, fmt.Errorf("grpc - v1 - AllUsers: %w", err)
 	}
