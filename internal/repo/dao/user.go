@@ -1,11 +1,11 @@
 package dao
 
 import (
+	"time"
+
 	"github.com/go-list-templ/grpc/internal/domain/entity"
 	"github.com/go-list-templ/grpc/internal/domain/vo"
 	"github.com/google/uuid"
-
-	"time"
 )
 
 type User struct {
