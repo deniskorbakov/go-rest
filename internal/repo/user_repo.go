@@ -41,6 +41,7 @@ func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
 					errToEntity = err
 
 					u.logger.Warn("failed to convert to entity", zap.Error(err), zap.Any("user", user))
+
 					break
 				}
 
@@ -49,6 +50,7 @@ func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
 
 			if errToEntity == nil {
 				u.logger.Info("all users from cache")
+
 				return users, nil
 			}
 		}
@@ -82,6 +84,7 @@ func (u *UserRepo) All(ctx context.Context) ([]entity.User, error) {
 		}
 	}()
 	u.logger.Info("all users from postgres")
+
 	return users, nil
 }
 
