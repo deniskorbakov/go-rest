@@ -36,10 +36,6 @@ func ErrorHandling() grpc.UnaryServerInterceptor {
 }
 
 func toGrpcError(err error) error {
-	if _, ok := status.FromError(err); ok {
-		return err
-	}
-
 	for currentErr, resCode := range allErr {
 		if errors.Is(err, currentErr) {
 			return status.Error(resCode, err.Error())
